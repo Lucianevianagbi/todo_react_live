@@ -9,11 +9,14 @@ function App() {
   const [modalAddTodo, setModalAddTodo] = useState(false)
   const [modalRemoveTodo, setModalRemoveTodo] = useState(false)
   const [modalShareTodo, setModalShareTodo] = useState(false)
+  const [modalEditTodo, setModalEditTodo] = useState(false)
   const [indexTodo, setIndexTodo] = useState(null)
   const [activeButtonShare, setActiveButtonShare] = useState(true)
 
   const inputRef = useRef(null)
   const textRef = useRef(null)
+  const editInputRef = useRef(null)
+  const editTextFieldRef = useRef(null)
   const phoneRef = useRef(null)
 
   const clearTextField = () => {
@@ -33,9 +36,21 @@ function App() {
     inputRef.current.focus()
   }
 
+  const editTodo = () => {
+    const newTodo = [...todos]
+    newTodo[indexTodo].title = editInputRef.current.value
+    newTodo[indexTodo].msg = editTextFieldRef.current.value
+    setTodos(newTodo)
+
+    setModalEditTodo(prevState => !prevState)
+  }
+
+
   const removeTodo = (i) => {
-    const newTodos = todos.filter((_, index) => index !== i)
+    const newTodos = [...todos]
+    newTodos.splice(i, 1)
     setTodos(newTodos)
+
     setModalRemoveTodo(prevState => !prevState)
   }
 
@@ -44,6 +59,8 @@ function App() {
   const showModalRemoveTodo = () => setModalRemoveTodo(prevState => !prevState)
 
   const showModalShareTodo = () => setModalShareTodo(prevState => !prevState)
+
+  const showModalEditTodo = () => setModalEditTodo(prevState => !prevState)
 
   const shareWhatsApp = () => {
     const phone = mask(phoneRef.current.value)
@@ -67,23 +84,26 @@ function App() {
 
   return (
     <S.Container>
-      <header>
-        <C.Title txt="Bem vindo!" />
-      </header>
+      <C.CardWrapper as="header">
+          <S.WrapperHeader>
+          <C.Title txt="Bem vindo!" />
+
+          <C.Button
+            onClick={showModalAddTodo}
+            txt="Adicionar Tarefa"
+            icon={<S.IconAdd />}
+          />
+        </S.WrapperHeader>
+      </C.CardWrapper>
 
       <S.Main>
-        <C.Button
-          onClick={showModalAddTodo}
-          txt="Adicionar Tarefa"
-          icon={<S.IconAdd />}
-        />
-
         {todos.map(({ title, msg }, i) => (
           <C.Todo
             key={i}
             setIndexTodo={setIndexTodo}
             index={i}
             showModalRemoveTodo={showModalRemoveTodo}
+            showModalEditTodo={showModalEditTodo}
             showModalShareTodo={showModalShareTodo}
             title={title}
             msg={msg}
@@ -97,7 +117,36 @@ function App() {
 
           <C.TextField ref={textRef} />
 
-          <C.Button onClick={addTodo} txt="Adicionar Tarefa" icon={<S.IconAdd />} />
+          <C.Button
+            fullWidth={true}
+            center={true}
+            onClick={addTodo}
+            txt="Adicionar Todo"
+            icon={<S.IconAdd />}
+          />
+        </C.Modal>
+      )}
+
+      {modalEditTodo && (
+        <C.Modal title="Atenção" onClick={showModalEditTodo}>
+          <C.Input
+            defaultValue={todos[indexTodo].title}
+            ref={editInputRef}
+            placeholder="Escreva o título do seu todo..."
+          />
+
+          <C.TextField
+            defaultValue={todos[indexTodo].msg}
+            ref={editTextFieldRef}
+          />
+
+          <C.Button
+            fullWidth={true}
+            center={true}
+            onClick={editTodo}
+            txt="Salvar Alterações"
+            icon={<S.IconSave />}
+          />
         </C.Modal>
       )}
 
@@ -109,6 +158,8 @@ function App() {
             onClick={() => removeTodo(indexTodo)}
             txt="Excluir o Todo"
             icon={<S.IconDelete />}
+            fullWidth={true}
+            center={true}
           />
         </C.Modal>
       )}
@@ -130,6 +181,8 @@ function App() {
             txt="Compartilhar Agora"
             icon={<IconWhatsApp size="2rem" />}
             disabled={activeButtonShare}
+            fullWidth={true}
+            center={true}
           />
         </C.Modal>
       )}

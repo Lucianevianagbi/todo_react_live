@@ -1,12 +1,13 @@
-import styled from 'styled-components'
-import { Add, Delete } from '@styled-icons/material-outlined'
+import styled, { css } from 'styled-components'
+import { Add, Delete, Save } from '@styled-icons/material-outlined'
+import T from '../theme'
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 120rem;
-  row-gap: 2rem;
+  max-width: 100rem;
+  row-gap: 3rem;
   position: relative;
 `
 
@@ -17,14 +18,34 @@ export const Main = styled.main`
   gap: 3rem;
 `
 
-export const IconAdd = styled(Add)`
+export const WrapperHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 2rem;
+  
+  ${T.breakPoints(490)} {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+`
+
+const styledIcons = css`
   fill: #fff;
   width: 2rem;
   height: 2rem;
 `
 
+export const IconAdd = styled(Add)`
+  ${styledIcons}
+`
+
 export const IconDelete = styled(Delete)`
-  fill: #fff;
-  width: 2rem;
-  height: 2rem;
+  f${styledIcons}
+`
+
+export const IconSave = styled(Save)`
+  ${styledIcons}
 `
