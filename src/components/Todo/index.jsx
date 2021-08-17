@@ -8,6 +8,7 @@ const Todo = ({
   msg,
   showModalRemoveTodo,
   showModalShareTodo,
+  showModalEditTodo,
   setIndexTodo,
   index
 }) => {
@@ -27,8 +28,13 @@ const Todo = ({
     setIndexTodo(index)
   }
 
+  const ActionEditTodo = () => {
+    showModalEditTodo()
+    setIndexTodo(index)
+  }
+
   return (
-    <S.Wrapper onClick={showButtons}>
+    <C.CardWrapper onClick={showButtons}>
       <S.WrapperContent showPadding={showActions}>
         <S.Title>{title}</S.Title>
         <S.Separator />
@@ -38,14 +44,12 @@ const Todo = ({
       {showActions && (
         <S.WrapperIcons>
           <C.ButtonIcon onClick={ActionRemoveTodo} icon={<S.IconDelete />} />
-          <C.ButtonIcon icon={<S.IconEdit />} />
-          <C.ButtonIcon
-            onClick={ActionShareTodo}
-            icon={<IconWhatsApp />}
+          <C.ButtonIcon onClick={ActionEditTodo} icon={<S.IconEdit />} />
+          <C.ButtonIcon onClick={ActionShareTodo} icon={<IconWhatsApp />}
           />
         </S.WrapperIcons>
       )}
-    </S.Wrapper>
+    </C.CardWrapper>
   )
 }
 
