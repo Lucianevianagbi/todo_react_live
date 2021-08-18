@@ -31,4 +31,18 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     align-items: center;
   }
+  
+  h1 {
+    font-size: 3rem;
+    font-weight: 600;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: 500;
+  }
+  
+  h1, h2, p {
+    word-break: break-word;
+  }
 `
