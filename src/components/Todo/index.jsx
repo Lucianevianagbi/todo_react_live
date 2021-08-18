@@ -6,9 +6,11 @@ import IconWhatsApp from '../Icon/WhatsApp'
 const Todo = ({
   title,
   msg,
+  done,
   showModalRemoveTodo,
   showModalShareTodo,
   showModalEditTodo,
+  doneTodo,
   setIndexTodo,
   index
 }) => {
@@ -18,36 +20,49 @@ const Todo = ({
     setShowActions(prevState => !prevState)
   }
 
-  const ActionRemoveTodo = () => {
+  const actionRemoveTodo = () => {
     showModalRemoveTodo()
     setIndexTodo(index)
   }
 
-  const ActionShareTodo = () => {
+  const actionEditTodo = () => {
+    showModalEditTodo()
+    setIndexTodo(index)
+  }
+
+  const actionShareTodo = () => {
     showModalShareTodo()
     setIndexTodo(index)
   }
 
-  const ActionEditTodo = () => {
-    showModalEditTodo()
-    setIndexTodo(index)
+  const changeDone = (e) => {
+    e.stopPropagation()
+    doneTodo(index)
   }
 
   return (
     <C.CardWrapper onClick={showButtons}>
       <S.WrapperContent showPadding={showActions}>
-        <S.Title>{title}</S.Title>
-        <S.Separator />
-        <S.Text>{msg}</S.Text>
+        <S.Title done={done}>{title}</S.Title>
+        <C.Separator />
+        <S.Text done={done}>{msg}</S.Text>
       </S.WrapperContent>
 
       {showActions && (
-        <S.WrapperIcons>
-          <C.ButtonIcon onClick={ActionRemoveTodo} icon={<S.IconDelete />} />
-          <C.ButtonIcon onClick={ActionEditTodo} icon={<S.IconEdit />} />
-          <C.ButtonIcon onClick={ActionShareTodo} icon={<IconWhatsApp />}
+        <S.WrapperButtons>
+          <S.WrapperIcons>
+            <C.ButtonIcon onClick={actionRemoveTodo} icon={<S.IconDelete />} />
+            <C.ButtonIcon onClick={actionEditTodo} icon={<S.IconEdit />} />
+            <C.ButtonIcon onClick={actionShareTodo} icon={<IconWhatsApp />} />
+          </S.WrapperIcons>
+
+          <C.Button
+            onClick={(e) => changeDone(e)}
+            txt={done ? 'Concluído' : 'Concluir'}
+            color={done ? 'success' : 'danger'}
+            size="small"
           />
-        </S.WrapperIcons>
+        </S.WrapperButtons>
       )}
     </C.CardWrapper>
   )

@@ -62,14 +62,6 @@ export const IconClose = styled(Close)`
   fill: #1a2d5a;
 `
 
-export const Separator = styled.div`
-  display: flex;
-  height: 0.1rem;
-  margin: 2rem 0;
-  border-radius: 0.5rem;
-  background-color: #b1bcd3;
-`
-
 export const Content = styled.div`
   display: flex;
   flex-direction: column;

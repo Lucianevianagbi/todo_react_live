@@ -1,4 +1,5 @@
 import * as S from './styles'
+import * as C from '../../components'
 
 const Modal = ({ children, title, onClick }) => {
   return (
@@ -8,9 +9,9 @@ const Modal = ({ children, title, onClick }) => {
           <S.IconClose />
         </S.ContainerClose>
 
-        <h1>{title}</h1>
+        <h2>{title}</h2>
 
-        <S.Separator />
+        <C.Separator margin="2rem 0" />
 
         <S.Content>
           {children}

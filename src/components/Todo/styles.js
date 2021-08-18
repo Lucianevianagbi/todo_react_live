@@ -9,22 +9,26 @@ export const WrapperContent = styled.div`
 `
 
 export const Title = styled.h2`
-  font-size: 2rem;
-  font-weight: 600;
-  word-break: break-word;
+  ${({ done }) => done && css`
+    text-decoration: line-through;
+  `}
 `
 
 export const Text = styled.p`
-  font-size: 1.6rem;
-  word-break: break-word;
+  ${({ done }) => done && css`
+    text-decoration: line-through;
+  `}
 `
 
-export const Separator = styled.div`
+export const WrapperButtons = styled.div`
+  flex-wrap: nowrap;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  row-gap: 1.5rem;
+  border-radius: 0.8rem;
   display: flex;
-  height: 0.1rem;
-  margin: 0.5rem 0;
-  border-radius: 0.5rem;
-  background-color: #b1bcd3;
 `
 
 export const WrapperIcons = styled.div`

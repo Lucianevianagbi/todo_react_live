@@ -1,8 +1,8 @@
 import * as S from './styles'
 
-const Button = ({ txt, icon, ...props }) => {
+const Button = ({ txt, icon, color = 'default', size = 'default', ...props }) => {
   return (
-    <S.Btn {...props}>{icon}{txt}</S.Btn>
+    <S.Btn {...props} color={color} size={size}>{icon}{txt}</S.Btn>
   )
 }
 
