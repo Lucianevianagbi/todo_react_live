@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import * as C from './components'
 import * as S from './styles/app'
 import IconWhatsApp from './components/Icon/WhatsApp'
-import mask from './utils/mask'
+import validation from './utils/validation'
+import { getLocalStorage, setLocalStorage } from './utils/localStorage'
 
 function App() {
   const [todos, setTodos] = useState([])
@@ -19,6 +20,25 @@ function App() {
   const editTextFieldRef = useRef(null)
   const phoneRef = useRef(null)
 
+  useEffect(() => {
+    if(getLocalStorage('listTodos') !== null) {
+      setTodos(getLocalStorage('listTodos'))
+    }
+  }, [])
+
+  useEffect(() => setLocalStorage('listTodos', todos), [todos])
+
+  const showModalAddTodo = () => setModalAddTodo(prevState => !prevState)
+  const showModalRemoveTodo = () => setModalRemoveTodo(prevState => !prevState)
+  const showModalShareTodo = () => setModalShareTodo(prevState => !prevState)
+  const showModalEditTodo = () => setModalEditTodo(prevState => !prevState)
+
+  const doneTodo = (i) => {
+    const newTodo = [...todos]
+    newTodo[i].done = !todos[i].done
+    setTodos(newTodo)
+  }
+
   const clearTextField = () => {
     inputRef.current.value = ''
     textRef.current.value = ''
@@ -27,7 +47,7 @@ function App() {
   const addTodo = () => {
     if (textRef.current.value === '' || inputRef.current.value === '') return
 
-    const todo = { title: inputRef.current.value, msg: textRef.current.value }
+    const todo = { title: inputRef.current.value, msg: textRef.current.value, done: false }
 
     setTodos([...todos, todo])
 
@@ -54,16 +74,8 @@ function App() {
     setModalRemoveTodo(prevState => !prevState)
   }
 
-  const showModalAddTodo = () => setModalAddTodo(prevState => !prevState)
-
-  const showModalRemoveTodo = () => setModalRemoveTodo(prevState => !prevState)
-
-  const showModalShareTodo = () => setModalShareTodo(prevState => !prevState)
-
-  const showModalEditTodo = () => setModalEditTodo(prevState => !prevState)
-
   const shareWhatsApp = () => {
-    const phone = mask(phoneRef.current.value)
+    const phone = validation(phoneRef.current.value)
     const linkBase = `https://api.whatsapp.com/send?phone=55${phone}&text=`
     const redirect = `${linkBase}*${todos[indexTodo].title}*%0a%0a${todos[indexTodo].msg}`
 
@@ -75,18 +87,22 @@ function App() {
 
   const validatePhone = () => {
     console.log('antes', phoneRef.current.value)
-    if(mask(phoneRef.current.value).length >= 11) {
+    if(validation(phoneRef.current.value).length >= 11) {
       console.log('if', phoneRef.current.value)
       setActiveButtonShare(false)
     }
     else !activeButtonShare && setActiveButtonShare(true)
   }
 
+  const verifyCompleteTodos = () => {
+    return todos.filter(({ done }) => done === true).length
+  }
+
   return (
     <S.Container>
       <C.CardWrapper as="header">
-          <S.WrapperHeader>
-          <C.Title txt="Bem vindo!" />
+        <S.WrapperHeader>
+          <h1>Bem vindo!</h1>
 
           <C.Button
             onClick={showModalAddTodo}
@@ -96,8 +112,12 @@ function App() {
         </S.WrapperHeader>
       </C.CardWrapper>
 
+      <C.CardWrapper>
+        <C.CompleteTodos completeTodos={verifyCompleteTodos()} TotalTodos={todos.length} />
+      </C.CardWrapper>
+
       <S.Main>
-        {todos.map(({ title, msg }, i) => (
+        {todos.map(({ title, msg, done }, i) => (
           <C.Todo
             key={i}
             setIndexTodo={setIndexTodo}
@@ -107,6 +127,8 @@ function App() {
             showModalShareTodo={showModalShareTodo}
             title={title}
             msg={msg}
+            done={done}
+            doneTodo={doneTodo}
           />
         ))}
       </S.Main>

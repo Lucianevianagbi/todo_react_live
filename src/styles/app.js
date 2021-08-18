@@ -7,7 +7,7 @@ export const Container = styled.div`
   flex-direction: column;
   width: 100%;
   max-width: 100rem;
-  row-gap: 3rem;
+  row-gap: 2rem;
   position: relative;
 `
 
@@ -15,7 +15,7 @@ export const Main = styled.main`
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 3rem;
+  gap: 2rem;
 `
 
 export const WrapperHeader = styled.div`
@@ -43,7 +43,7 @@ export const IconAdd = styled(Add)`
 `
 
 export const IconDelete = styled(Delete)`
-  f${styledIcons}
+  ${styledIcons}
 `
 
 export const IconSave = styled(Save)`
